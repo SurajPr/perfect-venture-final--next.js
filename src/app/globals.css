@@ -3,25 +3,81 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-base:      #09090f;
+  --bg-surface:   #111118;
+  --bg-surface-2: #1a1a27;
+  --border:       rgba(255, 255, 255, 0.07);
+  --primary:      #7C3AED;
+  --primary-light:#A78BFA;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+/* StarField canvas provides the background */
+html {
+  background: #09090f; /* fallback while canvas initialises */
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: transparent;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  z-index: 1;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Page structure layers above the star canvas */
+nav, main > section, footer {
+  position: relative;
+  z-index: 2;
 }
+
+/* ── Card hover: lift + purple glow ── */
+.card-hover {
+  transition:
+    transform      0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow     0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color   0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 20px 50px rgba(124, 58, 237, 0.20),
+    0 6px 18px  rgba(0, 0, 0, 0.55);
+}
+
+/* ── Subtle section separator ── */
+.section-sep {
+  border-top: 1px solid rgba(255, 255, 255, 0.045);
+}
+
+/* Glassmorphism dark card */
+.glass-dark {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Purple ambient glow */
+.hero-glow {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.65s ease-out both;
+}
+
+/* Scrollbar hidden for carousel */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
